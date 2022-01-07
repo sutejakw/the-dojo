@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 // styles and images
 import "./Sidebar.css";
