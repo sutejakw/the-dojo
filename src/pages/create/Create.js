@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { useCollection } from "../../hooks/useCollection";
+import { timestamp } from "../../firebase/config";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useFirestore } from "../../hooks/useFirestore";
+import { useHistory } from "react-router-dom";
 
 // styles
 import "./Create.css";
@@ -15,6 +19,9 @@ const categories = [
 export default function Create() {
   const { documents } = useCollection("users");
   const [users, setUsers] = useState([]);
+  const { user } = useAuthContext();
+  const { addDocument, response } = useFirestore("projects");
+  let history = useHistory();
 
   // form fields value
   const [name, setName] = useState("");
@@ -24,7 +31,7 @@ export default function Create() {
   const [assignedUsers, setAssignedUsers] = useState([]);
   const [formError, setFormError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError(null);
 
@@ -38,7 +45,36 @@ export default function Create() {
       return;
     }
 
-    console.log(name, details, dueDate, category.value, assignedUsers);
+    const createdBy = {
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      id: user.uid,
+    };
+
+    const assignedUsersList = assignedUsers.map((u) => {
+      return {
+        displayName: u.value.displayName,
+        photoURL: u.value.photoURL,
+        id: u.value.id,
+      };
+    });
+
+    const project = {
+      name,
+      details,
+      category: category.value,
+      dueDate: timestamp.fromDate(new Date(dueDate)),
+      createdBy,
+      assignedUsersList,
+      comments: [],
+    };
+
+    await addDocument(project);
+    if (!response.error) {
+      history.push("/");
+    } else {
+      setFormError(response.error);
+    }
   };
 
   useEffect(() => {
@@ -103,7 +139,8 @@ export default function Create() {
 
         {formError && <div className="error">{formError}</div>}
 
-        <button>Add Project</button>
+        {!response.isPending && <button>Add Project</button>}
+        {response.isPending && <button>loading...</button>}
       </form>
     </div>
   );
