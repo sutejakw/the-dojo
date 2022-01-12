@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useDocument } from "../../hooks/useDocument";
 import ProjectSumary from "./ProjectSumary";
+import ProjectComments from "./ProjectComments";
 
 // styles
 import "./Project.css";
-import ProjectComments from "./ProjectComments";
 
 export default function Project() {
   const { id } = useParams();
@@ -16,7 +16,6 @@ export default function Project() {
   if (!document) {
     return <div className="loading">loading...</div>;
   }
-
   return (
     <div className="project-details">
       <ProjectSumary project={document} />
