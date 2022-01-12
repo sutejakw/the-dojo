@@ -37,7 +37,10 @@ export default function ProjectComments({ project }) {
           project.comments.map((comment) => (
             <li key={comment.id}>
               <div className="comment-author">
-                <Avatar src={comment.photoURL} />
+                <Avatar
+                  src={comment.photoURL}
+                  displayName={comment.displayName}
+                />
                 <p>{comment.displayName}</p>
               </div>
               <div className="comment-date">

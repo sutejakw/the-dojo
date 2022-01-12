@@ -15,7 +15,10 @@ export default function ProjectList({ projects }) {
           <ul>
             {project.assignedUsersList.map((userlist) => (
               <li key={userlist.photoURL}>
-                <Avatar src={userlist.photoURL} />
+                <Avatar
+                  src={userlist.photoURL}
+                  displayName={userlist.displayName}
+                />
               </li>
             ))}
           </ul>
