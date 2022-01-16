@@ -33,11 +33,11 @@ export default function ProjectSumary({ project }) {
           ))}
         </div>
       </div>
-      {project.createdBy.id == user.uid && (
-        <button className="btn" onClick={handleClick}>
-          Mark as complete
-        </button>
-      )}
+      {/* {project.createdBy.id == user.uid && ( */}
+      <button className="btn" onClick={handleClick}>
+        Mark as complete
+      </button>
+      {/* )} */}
     </div>
   );
 }
