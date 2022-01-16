@@ -139,7 +139,7 @@ export default function Create() {
 
         {formError && <div className="error">{formError}</div>}
 
-        {!response.isPending && <button>Add Project</button>}
+        {!response.isPending && <button className="btn">Add Project</button>}
         {response.isPending && <button>loading...</button>}
       </form>
     </div>
